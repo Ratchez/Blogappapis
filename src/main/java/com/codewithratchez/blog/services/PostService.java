@@ -2,6 +2,7 @@ package com.codewithratchez.blog.services;
 
 import com.codewithratchez.blog.entities.Post;
 import com.codewithratchez.blog.payloads.PostDto;
+import com.codewithratchez.blog.payloads.PostResponse;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface PostService {
 
     //get all posts
 
-    List<PostDto> getAllPost(Integer pageNumber, Integer pageSize);
+    PostResponse getAllPost(Integer pageNumber, Integer pageSize);
 
     //get single post
     PostDto getPostById(Integer postId);

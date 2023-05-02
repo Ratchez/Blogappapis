@@ -5,6 +5,7 @@ import com.codewithratchez.blog.entities.Post;
 import com.codewithratchez.blog.entities.User;
 import com.codewithratchez.blog.exceptions.ResourceNotFoundException;
 import com.codewithratchez.blog.payloads.PostDto;
+import com.codewithratchez.blog.payloads.PostResponse;
 import com.codewithratchez.blog.repositories.CategoryRepo;
 import com.codewithratchez.blog.repositories.PostRepo;
 import com.codewithratchez.blog.repositories.UserRepo;
@@ -62,12 +63,21 @@ public class PostServiceImpl implements PostService {
         postRepo.delete(post);
     }
     @Override
-    public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize){
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize){
         Pageable p = PageRequest.of(pageNumber, pageSize);
         Page<Post> pagePost = postRepo.findAll(p);
         List<Post> allPosts = pagePost.getContent();
         List<PostDto> postDtos = allPosts.stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-        return postDtos;
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return postResponse;
     }
 
     @Override
