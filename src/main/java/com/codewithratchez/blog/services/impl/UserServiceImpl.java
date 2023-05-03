@@ -5,6 +5,7 @@ import com.codewithratchez.blog.exceptions.ResourceNotFoundException;
 import com.codewithratchez.blog.payloads.UserDto;
 import com.codewithratchez.blog.repositories.UserRepo;
 import com.codewithratchez.blog.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
@@ -21,7 +23,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto){
         User user = this.dtoToUser(userDto);
+
+        user.setStudentId(UUIDGenerator(user));
+        log.info(user.toString());
         User savedUser = userRepo.save(user);
+        log.info("User with name {} created with student Id {}", savedUser.getName(), savedUser.getStudentId());
         return this.userToDto(savedUser);
     }
     @Override
@@ -37,8 +43,8 @@ public class UserServiceImpl implements UserService {
         return userDto1;
     }
     @Override
-    public UserDto getUserById(Integer userId){
-        User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"));
+    public UserDto getUserByStudentId(String userId){
+        User user = userRepo.findByStudentId(userId).orElseThrow(() -> new ResourceNotFoundException("User"));
         return this.userToDto(user);
     }
     @Override
@@ -65,4 +71,8 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    private String UUIDGenerator(User user) {
+        log.info(String.valueOf(user.hashCode()));
+        return String.valueOf(user.hashCode());
+    }
 }

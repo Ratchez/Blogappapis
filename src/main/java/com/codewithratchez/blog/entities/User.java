@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import java.util.UUID;
 @Table(name = "users")
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter @ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true, nullable = false, length = 10000)
+    private String studentId;
     @Column(name = "user_name", nullable = false, length = 100)
     private String name;
     private String email;
