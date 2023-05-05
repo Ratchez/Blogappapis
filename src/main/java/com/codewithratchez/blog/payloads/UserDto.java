@@ -26,4 +26,6 @@ public class UserDto {
     private String password;
     @NotEmpty
     private String about;
+
+    private String studentId;
 }
