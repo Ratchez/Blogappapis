@@ -1,13 +1,17 @@
 package com.codewithratchez.blog.services.impl;
 
+import com.codewithratchez.blog.config.AppConstants;
+import com.codewithratchez.blog.entities.Role;
 import com.codewithratchez.blog.entities.User;
 import com.codewithratchez.blog.exceptions.ResourceNotFoundException;
 import com.codewithratchez.blog.payloads.UserDto;
+import com.codewithratchez.blog.repositories.RoleRepo;
 import com.codewithratchez.blog.repositories.UserRepo;
 import com.codewithratchez.blog.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +24,11 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepo roleRepo;
+
     @Override
     public UserDto createUser(UserDto userDto){
         User user = this.dtoToUser(userDto);
@@ -74,5 +83,21 @@ public class UserServiceImpl implements UserService {
     private String UUIDGenerator(User user) {
         log.info(String.valueOf(user.hashCode()));
         return String.valueOf(user.hashCode());
+    }
+
+    @Override
+    public UserDto registerNewUser(UserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+
+        //encode the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //set roles for users
+        Role role = roleRepo.findById(AppConstants.NORMAL_USER).get();
+
+        user.getRoles().add(role);
+
+        User newUser = userRepo.save(user);
+        return modelMapper.map(newUser, UserDto.class);
     }
 }
