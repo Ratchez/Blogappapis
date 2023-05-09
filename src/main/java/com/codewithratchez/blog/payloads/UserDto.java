@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -28,4 +30,6 @@ public class UserDto {
     private String about;
 
     private String studentId;
+
+    private Set<RoleDto> roles = new HashSet<>();
 }
