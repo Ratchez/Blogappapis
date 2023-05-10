@@ -5,6 +5,8 @@ import com.codewithratchez.blog.entities.Role;
 import com.codewithratchez.blog.entities.User;
 import com.codewithratchez.blog.exceptions.ResourceNotFoundException;
 import com.codewithratchez.blog.payloads.UserDto;
+import com.codewithratchez.blog.payloads.UserRegReqDto;
+import com.codewithratchez.blog.payloads.UserRegRespDto;
 import com.codewithratchez.blog.repositories.RoleRepo;
 import com.codewithratchez.blog.repositories.UserRepo;
 import com.codewithratchez.blog.services.UserService;
@@ -86,18 +88,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto registerNewUser(UserDto userDto) {
+    public UserRegRespDto registerNewUser(UserRegReqDto userDto) {
         User user = modelMapper.map(userDto, User.class);
 
         //encode the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         //set roles for users
-        Role role = roleRepo.findById(AppConstants.NORMAL_USER).get();
+        Role role = roleRepo.findById(AppConstants.ROLE_USER).get();
 
         user.getRoles().add(role);
 
+        user.setStudentId(UUIDGenerator(user));
+
         User newUser = userRepo.save(user);
-        return modelMapper.map(newUser, UserDto.class);
+        return modelMapper.map(newUser, UserRegRespDto.class);
     }
 }
