@@ -1,9 +1,11 @@
 package com.codewithratchez.blog.payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class UserDto {
     private int id;
     @NotEmpty
@@ -30,6 +33,5 @@ public class UserDto {
     private String about;
 
     private String studentId;
-
-    private Set<RoleDto> roles = new HashSet<>();
+    
 }
