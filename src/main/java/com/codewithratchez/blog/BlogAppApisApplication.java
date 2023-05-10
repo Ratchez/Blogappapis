@@ -34,12 +34,12 @@ public class BlogAppApisApplication implements CommandLineRunner{
 		System.out.println(passwordEncoder.encode("xyz"));
 		try {
 			Role role = new Role();
-			role.setRoleId(AppConstants.ADMIN_USER);
-			role.setName("ADMIN_USER");
+			role.setRoleId(AppConstants.ROLE_ADMIN);
+			role.setName("ROLE_ADMIN");
 
 			Role role1 = new Role();
-			role1.setRoleId(AppConstants.NORMAL_USER);
-			role1.setName("NORMAL_USER");
+			role1.setRoleId(AppConstants.ROLE_USER);
+			role1.setName("ROLE_USER");
 
 			List<Role> roles =  List.of(role, role1);
 			List<Role> result = roleRepo.saveAll(roles);
