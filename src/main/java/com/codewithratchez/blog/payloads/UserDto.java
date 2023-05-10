@@ -7,10 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 @NoArgsConstructor
 @Getter
 @Setter
@@ -27,6 +23,7 @@ public class UserDto {
 
     @NotEmpty
     @NotBlank
+    @JsonIgnore
     @Size(min = 3, max = 10, message = "Password must be min of 3 chars and max of 10 chars")
     private String password;
     @NotEmpty
