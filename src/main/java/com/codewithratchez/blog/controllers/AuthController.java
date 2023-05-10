@@ -3,6 +3,8 @@ package com.codewithratchez.blog.controllers;
 import com.codewithratchez.blog.exceptions.ApiException;
 import com.codewithratchez.blog.payloads.JwtAuthRequest;
 import com.codewithratchez.blog.payloads.UserDto;
+import com.codewithratchez.blog.payloads.UserRegReqDto;
+import com.codewithratchez.blog.payloads.UserRegRespDto;
 import com.codewithratchez.blog.security.JwtAuthResponse;
 import com.codewithratchez.blog.security.JwtTokenHelper;
 import com.codewithratchez.blog.services.UserService;
@@ -54,9 +56,10 @@ public class AuthController {
 
     //register new user api
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
-        UserDto registeredUser = userService.registerNewUser(userDto);
+    public ResponseEntity<UserRegRespDto> registerUser(@RequestBody UserRegReqDto userDto){
+        System.out.println(userDto);
+        UserRegRespDto registeredUser = userService.registerNewUser(userDto);
 
-        return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
 }
