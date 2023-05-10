@@ -33,5 +33,5 @@ public class UserDto {
     private String about;
 
     private String studentId;
-    
+
 }
