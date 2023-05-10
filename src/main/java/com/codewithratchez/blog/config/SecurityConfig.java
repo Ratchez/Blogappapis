@@ -3,6 +3,9 @@ package com.codewithratchez.blog.config;
 import com.codewithratchez.blog.security.CustomUserDetailService;
 import com.codewithratchez.blog.security.JwtAuthenticationEntryPoint;
 import com.codewithratchez.blog.security.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +31,15 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    public static final String[] PUBLIC_URLS = {
+            "/api/v1/auth/**",
+            "/v3/api-docs",
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+    };
     @Autowired
     private CustomUserDetailService customUserDetailService;
     @Autowired
@@ -41,8 +53,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/v3/api-docs").permitAll()
+                .requestMatchers(PUBLIC_URLS).permitAll()
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest()
                 .authenticated()
@@ -78,5 +89,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
      }
+
 
 }
