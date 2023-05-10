@@ -13,8 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserRegDto {
-    private int id;
+public class UserRegReqDto {
     @NotEmpty
     @NotBlank
     @Size(min = 4, message = "Username must be have min of 4 characters")
