@@ -3,6 +3,7 @@ package com.codewithratchez.blog;
 import com.codewithratchez.blog.config.AppConstants;
 import com.codewithratchez.blog.entities.Role;
 import com.codewithratchez.blog.repositories.RoleRepo;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
