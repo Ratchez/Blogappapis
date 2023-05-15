@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(security = {@SecurityRequirement(name = "bearer-key")})
+@OpenAPIDefinition
 public class SwaggerConfig {
     @Bean
     public OpenAPI baseOpenApi(){
