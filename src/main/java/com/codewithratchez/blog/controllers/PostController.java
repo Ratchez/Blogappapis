@@ -6,6 +6,7 @@ import com.codewithratchez.blog.payloads.PostDto;
 import com.codewithratchez.blog.payloads.PostResponse;
 import com.codewithratchez.blog.services.FileService;
 import com.codewithratchez.blog.services.PostService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/")
+@SecurityRequirement(name = "Bearer Authentication")
 public class PostController {
     @Autowired
     private PostService postService;

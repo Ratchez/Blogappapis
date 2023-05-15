@@ -8,6 +8,7 @@ import com.codewithratchez.blog.payloads.UserRegRespDto;
 import com.codewithratchez.blog.security.JwtAuthResponse;
 import com.codewithratchez.blog.security.JwtTokenHelper;
 import com.codewithratchez.blog.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
+@SecurityRequirement(name = "Bearer Authentication")
 public class AuthController {
     @Autowired
     private JwtTokenHelper jwtTokenHelper;

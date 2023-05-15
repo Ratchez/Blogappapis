@@ -3,6 +3,7 @@ package com.codewithratchez.blog.controllers;
 import com.codewithratchez.blog.payloads.ApiResponse;
 import com.codewithratchez.blog.payloads.CategoryDto;
 import com.codewithratchez.blog.services.CategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@SecurityRequirement(name = "Bearer Authentication")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;

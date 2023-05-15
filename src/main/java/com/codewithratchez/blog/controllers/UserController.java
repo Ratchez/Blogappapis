@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
-@SecurityRequirement(name="codeusingjava")
+@SecurityRequirement(name = "Bearer Authentication")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -40,7 +40,6 @@ public class UserController {
     // DELETE-delete user
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete user", description = "Delete user")
-    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer userId){
         userService.deleteUser(userId);
@@ -55,7 +54,7 @@ public class UserController {
 
     // GET - user gets specific user
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getSingleUser(@PathVariable String userId){
-        return ResponseEntity.ok(userService.getUserByStudentId(userId));
+    public ResponseEntity<UserDto> getSingleUser(@PathVariable Integer userId){
+        return ResponseEntity.ok(userService.getUserById(userId));
     }
 }
