@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
         return userDto1;
     }
     @Override
-    public UserDto getUserByStudentId(String userId){
-        User user = userRepo.findByStudentId(userId).orElseThrow(() -> new ResourceNotFoundException("User"));
+    public UserDto getUserById(Integer userId){
+        User user =userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"));
         return this.userToDto(user);
     }
     @Override
