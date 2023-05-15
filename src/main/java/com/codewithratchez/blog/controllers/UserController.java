@@ -3,6 +3,8 @@ package com.codewithratchez.blog.controllers;
 import com.codewithratchez.blog.payloads.ApiResponse;
 import com.codewithratchez.blog.payloads.UserDto;
 import com.codewithratchez.blog.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
+@SecurityRequirement(name="codeusingjava")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -36,6 +39,8 @@ public class UserController {
     //ADMIN
     // DELETE-delete user
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete user", description = "Delete user")
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer userId){
         userService.deleteUser(userId);
