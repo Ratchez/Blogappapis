@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
@@ -31,16 +34,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepo roleRepo;
 
-    @Override
-    public UserDto createUser(UserDto userDto){
-        User user = this.dtoToUser(userDto);
-
-        user.setStudentId(UUIDGenerator(user));
-        log.info(user.toString());
-        User savedUser = userRepo.save(user);
-        log.info("User with name {} created with student Id {}", savedUser.getName(), savedUser.getStudentId());
-        return this.userToDto(savedUser);
-    }
+//    @Override
+//    public UserDto createUser(UserDto userDto){
+//        User user = this.dtoToUser(userDto);
+//
+//        user.setBloggerId(UUIDGenerator(user));
+//        log.info(user.toString());
+//        User savedUser = userRepo.save(user);
+//        log.info("User with name {} created with student Id {}", savedUser.getName(), savedUser.getBloggerId());
+//        return this.userToDto(savedUser);
+//    }
     @Override
     public UserDto updateUser(UserDto userDto, Integer userId){
         User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"));
@@ -54,8 +57,8 @@ public class UserServiceImpl implements UserService {
         return userDto1;
     }
     @Override
-    public UserDto getUserById(Integer userId){
-        User user =userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"));
+    public UserDto getUserByBloggerId(String bloggerId){
+        User user = userRepo.findByBloggerId(bloggerId).orElseThrow(() -> new ResourceNotFoundException("User"));
         return this.userToDto(user);
     }
     @Override
@@ -82,10 +85,17 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    private String UUIDGenerator(User user) {
-        log.info(String.valueOf(user.hashCode()));
-        return String.valueOf(user.hashCode());
-    }
+//    private String UUIDGenerator(User user) {
+//        SecureRandom secureRandom = new SecureRandom();
+//        int rnum = secureRandom.nextInt(1000);
+//        String snum = String.valueOf(rnum);
+//        BigInteger val = new BigInteger("2023" + "/" + snum);
+//        SecureRandom random = new SecureRandom();
+//        int upperbound = 10000000;
+//        int user = random.nextInt(upperbound);
+//        log.info(String.valueOf(user.hashCode()));
+//        return String.valueOf(user.hashCode());
+//    }
 
     @Override
     public UserRegRespDto registerNewUser(UserRegReqDto userDto) {
@@ -95,11 +105,22 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         //set roles for users
-        Role role = roleRepo.findById(AppConstants.ROLE_USER).get();
+//        Role role = roleRepo.findById(AppConstants.ROLE_USER).get();
+        Role role;
+        Optional<Role> roleOpt = roleRepo.findById(AppConstants.ROLE_USER);
+        // return error, role not configured
+        role = roleOpt.orElseGet(() -> new Role(502, "ROLE_USER"));
 
         user.getRoles().add(role);
 
-        user.setStudentId(UUIDGenerator(user));
+        SecureRandom secureRandom = new SecureRandom();
+        int rnum = secureRandom.nextInt(10000000);
+        String snum = String.valueOf(rnum);
+        BigInteger bloggerId = new BigInteger(snum);
+
+        user.setBloggerId(bloggerId.toString());
+
+//        user.setBloggerId(UUIDGenerator(user));
 
         User newUser = userRepo.save(user);
         return modelMapper.map(newUser, UserRegRespDto.class);
