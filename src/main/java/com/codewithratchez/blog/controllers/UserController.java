@@ -23,11 +23,11 @@ public class UserController {
     private UserService userService;
 
     // POST-create user
-    @PostMapping()
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
-        UserDto createdUser = userService.createUser(userDto);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-    }
+//    @PostMapping()
+//    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
+//        UserDto createdUser = userService.createUser(userDto);
+//        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+//    }
 
     // PUT-update user
     @PutMapping("/{userId}")
@@ -53,8 +53,8 @@ public class UserController {
     }
 
     // GET - user gets specific user
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getSingleUser(@PathVariable Integer userId){
-        return ResponseEntity.ok(userService.getUserById(userId));
+    @GetMapping("/{bloggerId}")
+    public ResponseEntity<UserDto> getSingleUser(@PathVariable String bloggerId){
+        return ResponseEntity.ok(userService.getUserByBloggerId(bloggerId));
     }
 }
