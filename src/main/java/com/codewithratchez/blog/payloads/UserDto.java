@@ -12,6 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserDto {
+    @JsonIgnore
     private int id;
     @NotEmpty
     @NotBlank
@@ -29,6 +30,7 @@ public class UserDto {
     @NotEmpty
     private String about;
 
-    private String studentId;
+    @JsonIgnore
+    private String bloggerId;
 
 }
