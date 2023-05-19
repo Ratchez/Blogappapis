@@ -1,5 +1,6 @@
 package com.codewithratchez.blog.payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -29,7 +30,7 @@ public class UserRegReqDto {
     @NotEmpty
     private String about;
 
-    private String studentId;
+    private String bloggerId;
 
 //    private Set<RoleDto> roles = new HashSet<>();
 }

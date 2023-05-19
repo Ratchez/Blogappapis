@@ -26,7 +26,7 @@ public class UserRegRespDto {
     @NotEmpty
     private String about;
 
-    private String studentId;
+    private String bloggerId;
 
 //    private Set<RoleDto> roles = new HashSet<>();
 }
