@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public interface UserService {
     UserRegRespDto registerNewUser(UserRegReqDto user);
-    UserDto createUser(UserDto user);
+//    UserDto createUser(UserDto user);
     UserDto updateUser(UserDto user, Integer userId);
-//    UserDto getUserByStudentId(String userId);
-    UserDto getUserById(Integer userId);
+    UserDto getUserByBloggerId(String bloggerId);
+//    UserDto getUserById(Integer userId);
     List<UserDto> getAllUsers();
     void deleteUser(Integer userId);
 }
