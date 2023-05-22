@@ -22,11 +22,11 @@ public class UserDto {
     @NotBlank
     private String email;
 
-    @NotEmpty
-    @NotBlank
-    @JsonIgnore
-    @Size(min = 3, max = 10, message = "Password must be min of 3 chars and max of 10 chars")
-    private String password;
+//    @NotEmpty
+//    @NotBlank
+//    @JsonIgnore
+//    @Size(min = 3, max = 10, message = "Password must be min of 3 chars and max of 10 chars")
+//    private String password;
     @NotEmpty
     private String about;
 
