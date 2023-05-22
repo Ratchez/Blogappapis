@@ -9,6 +9,7 @@ import com.codewithratchez.blog.security.JwtAuthResponse;
 import com.codewithratchez.blog.security.JwtTokenHelper;
 import com.codewithratchez.blog.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,7 @@ public class AuthController {
 
     //register new user api
     @PostMapping("/register")
-    public ResponseEntity<UserRegRespDto> registerUser(@RequestBody UserRegReqDto userDto){
+    public ResponseEntity<UserRegRespDto> registerUser(@Valid @RequestBody UserRegReqDto userDto){
         System.out.println(userDto);
         UserRegRespDto registeredUser = userService.registerNewUser(userDto);
 
