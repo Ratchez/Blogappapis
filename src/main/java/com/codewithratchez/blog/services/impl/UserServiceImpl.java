@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+//        user.setPassword(userDto.getPassword());
         user.setAbout(userDto.getAbout());
 
         User updatedUser = userRepo.save(user);
