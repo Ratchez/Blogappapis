@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class User implements UserDetails {
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int id;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     @Column(unique = true, nullable = false, length = 10000)
-    private String bloggerId;
+    private Integer bloggerId;
     @Column(name = "user_name", nullable = false, length = 100)
     private String name;
     private String email;
@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private List<Post> posts = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "roleId"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "bloggerId"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "roleId"))
     private Set<Role> roles = new HashSet<>();
 
     @Override
