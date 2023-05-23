@@ -34,19 +34,36 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepo roleRepo;
 
-//    @Override
-//    public UserDto createUser(UserDto userDto){
-//        User user = this.dtoToUser(userDto);
-//
-//        user.setBloggerId(UUIDGenerator(user));
-//        log.info(user.toString());
-//        User savedUser = userRepo.save(user);
-//        log.info("User with name {} created with student Id {}", savedUser.getName(), savedUser.getBloggerId());
-//        return this.userToDto(savedUser);
-//    }
     @Override
-    public UserDto updateUser(UserDto userDto, Integer userId){
-        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"));
+    public UserDto createUser(UserDto userDto){
+        User user = this.dtoToUser(userDto);
+
+        //encode the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //set roles for users
+//        Role role = roleRepo.findById(AppConstants.ROLE_USER).get();
+        Role role;
+        Optional<Role> roleOpt = roleRepo.findById(AppConstants.ROLE_USER);
+        // return error, role not configured
+        role = roleOpt.orElseGet(() -> new Role(3, "ROLE_USER"));
+
+        user.getRoles().add(role);
+
+        SecureRandom secureRandom = new SecureRandom();
+        int rnum = secureRandom.nextInt(10000000);
+        String snum = String.valueOf(rnum);
+        BigInteger bloggerId = new BigInteger(snum);
+
+        user.setBloggerId(Integer.valueOf(bloggerId.toString()));
+
+        User savedUser = userRepo.save(user);
+
+        return this.userToDto(savedUser);
+    }
+    @Override
+    public UserDto updateUser(UserDto userDto, Integer bloggerId){
+        User user = userRepo.findByBloggerId(bloggerId).orElseThrow(()-> new ResourceNotFoundException("User"));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
 //        user.setPassword(userDto.getPassword());
@@ -57,7 +74,7 @@ public class UserServiceImpl implements UserService {
         return userDto1;
     }
     @Override
-    public UserDto getUserByBloggerId(String bloggerId){
+    public UserDto getUserByBloggerId(Integer bloggerId){
         User user = userRepo.findByBloggerId(bloggerId).orElseThrow(() -> new ResourceNotFoundException("User"));
         return this.userToDto(user);
     }
@@ -67,8 +84,8 @@ public class UserServiceImpl implements UserService {
         List<UserDto> userDtos = users.stream().map(user -> this.userToDto(user)).collect(Collectors.toList());
         return userDtos;
     }
-    public void deleteUser(Integer userId){
-        User user = userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"));
+    public void deleteUser(Integer bloggerId){
+        User user = userRepo.findByBloggerId(bloggerId).orElseThrow(()-> new ResourceNotFoundException("User"));
         userRepo.delete(user);
     }
     private User dtoToUser(UserDto userDto){
@@ -109,7 +126,7 @@ public class UserServiceImpl implements UserService {
         Role role;
         Optional<Role> roleOpt = roleRepo.findById(AppConstants.ROLE_USER);
         // return error, role not configured
-        role = roleOpt.orElseGet(() -> new Role(502, "ROLE_USER"));
+        role = roleOpt.orElseGet(() -> new Role(3, "ROLE_USER"));
 
         user.getRoles().add(role);
 
@@ -118,7 +135,7 @@ public class UserServiceImpl implements UserService {
         String snum = String.valueOf(rnum);
         BigInteger bloggerId = new BigInteger(snum);
 
-        user.setBloggerId(bloggerId.toString());
+        user.setBloggerId(Integer.valueOf(bloggerId.toString()));
 
 //        user.setBloggerId(UUIDGenerator(user));
 
