@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,9 +34,10 @@ public class PostController {
     private String path;
 
     // create post
-    @PostMapping("/user/{userId}/category/{categoryId}/posts")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, @PathVariable Integer userId, @PathVariable Integer categoryId) {
-        PostDto createPost = postService.createPost(postDto, userId, categoryId);
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
+    @PostMapping("/user/{bloggerId}/category/{categoryId}/posts")
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, @PathVariable Integer bloggerId, @PathVariable Integer categoryId) {
+        PostDto createPost = postService.createPost(postDto, bloggerId, categoryId);
         return new ResponseEntity<PostDto>(createPost, HttpStatus.CREATED);
     }
 
@@ -73,6 +75,7 @@ public class PostController {
     }
 
     // update post
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     @PutMapping("/posts/{postId}")
     public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable Integer postId){
         PostDto updatePost = postService.updatePost(postDto,postId);
@@ -80,6 +83,7 @@ public class PostController {
     }
 
     // delete post
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     @DeleteMapping("/posts/{postId}")
     public ApiResponse deletePost(@PathVariable Integer postId){
         postService.deletePost(postId);
@@ -94,6 +98,7 @@ public class PostController {
     }
 
     // post image upload
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     @PostMapping("/post/image/upload/{postId}")
     public ResponseEntity<PostDto> uploadPostImage(@RequestParam("image") MultipartFile image,
                                                          @PathVariable Integer postId) throws IOException {
@@ -106,6 +111,7 @@ public class PostController {
     }
 
     // get image upload
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     @GetMapping(value = "post/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
     public void downloadImage(
             @PathVariable("imageName") String imageName,
