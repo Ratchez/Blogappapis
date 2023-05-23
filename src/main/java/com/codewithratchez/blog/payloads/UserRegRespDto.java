@@ -1,5 +1,6 @@
 package com.codewithratchez.blog.payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -14,7 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserRegRespDto {
-    private int id;
+
     @NotEmpty
     @NotBlank
     @Size(min = 4, message = "Username must be have min of 4 characters")
@@ -26,6 +27,7 @@ public class UserRegRespDto {
     @NotEmpty
     private String about;
 
+    @JsonIgnore
     private String bloggerId;
 
 //    private Set<RoleDto> roles = new HashSet<>();
