@@ -27,7 +27,7 @@ public interface PostService {
     List<PostDto> getPostsByCategory(Integer categoryId);
 
     //get all post by user
-    List<PostDto> getPostsByUser(Integer userId);
+    List<PostDto> getPostsByUser(Integer bloggerId);
 
     //search posts
     List<PostDto> searchPosts(String keyword);
