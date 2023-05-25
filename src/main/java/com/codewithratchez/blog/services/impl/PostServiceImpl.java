@@ -104,8 +104,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPostsByUser(Integer userId) {
-        User user1 = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"));
+    public List<PostDto> getPostsByUser(Integer bloggerId) {
+        User user1 = userRepo.findByBloggerId(bloggerId).orElseThrow(() -> new ResourceNotFoundException("User"));
         List<Post> posts = postRepo.findByUser(user1);
 
         List<PostDto> postDtos = posts.stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
