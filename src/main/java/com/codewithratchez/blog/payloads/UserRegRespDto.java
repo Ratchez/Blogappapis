@@ -24,6 +24,7 @@ public class UserRegRespDto {
     @NotBlank
     private String email;
 
+    @NotBlank
     private String about;
 
     @JsonIgnore
