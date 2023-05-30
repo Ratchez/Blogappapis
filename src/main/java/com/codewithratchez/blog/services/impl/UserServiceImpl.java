@@ -3,6 +3,7 @@ package com.codewithratchez.blog.services.impl;
 import com.codewithratchez.blog.config.AppConstants;
 import com.codewithratchez.blog.entities.Role;
 import com.codewithratchez.blog.entities.User;
+import com.codewithratchez.blog.exceptions.ApiException;
 import com.codewithratchez.blog.exceptions.ResourceNotFoundException;
 import com.codewithratchez.blog.payloads.UserDto;
 import com.codewithratchez.blog.payloads.UserRegReqDto;
@@ -117,6 +118,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRegRespDto registerNewUser(UserRegReqDto userDto) {
         User user = modelMapper.map(userDto, User.class);
+
+        // check if user exists by checking for email in database
+        if (userRepo.existsByEmail(user.getEmail())){
+            throw new ApiException("User with this email already exists");
+        }
 
         //encode the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
